@@ -1,14 +1,14 @@
-/bin/
-/.metadata/
-*.pyc
+#/bin/
+#/.metadata/
+#*.pyc
 
 .DS_Store
 
-/.settings
-/.classpath
-/.project
+#/.settings
+#/.classpath
+#/.project
 
-/.metadata
+#/.metadata
 
 .~*
 ._*
