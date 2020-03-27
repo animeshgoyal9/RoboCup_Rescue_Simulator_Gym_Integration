@@ -1,0 +1,1 @@
+{"env": "simple_tag_guided", "learning_rate": 0.001, "episodes": 500000, "render": false, "benchmark": false, "experiment_prefix": "./results/dqn_1v1/", "weights_filename_prefix": "/save/tag-dqn", "csv_filename_prefix": "/save/statistics-dqn", "checkpoint_frequency": 500, "testing": false, "random_seed": 2, "memory_size": 10000, "batch_size": 128, "epsilon_greedy": null}

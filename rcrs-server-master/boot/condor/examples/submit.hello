@@ -1,0 +1,6 @@
+Executable = hello
+Universe = standard
+Output = hello.out
+Log = /tmp/hello.log
+Error = hello.err
+Queue

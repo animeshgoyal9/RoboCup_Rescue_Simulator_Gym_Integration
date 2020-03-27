@@ -1,0 +1,50 @@
+universe = vanilla
+executable = testing_condor.sh 
+
++Group = "GRAD"
++Project = "AI_ROBOTICS"
++ProjectDescription = "Simulating RoboCup Rescue Simulator"
+
+Input = testing_condor.sub
+
+# notify_user = animesh.goyal9@gmail.com
+# notification = error
+# Requirements = TARGET.UidDomain == "cs.utexas.edu" &&  TARGET.FileSystemDomain == "cs.utexas.edu" && InMastodon && ARCH == "X86_64" && !GPU && ( target.OpSys == "LINUX") 
+
+Environment = ONCONDOR=true
+
+# Rank = -SlotId-1*InMastodon
+
+
+# Specify the resources required
+Request_cpus = 1
+Request_memory = 16GB
+Request_disk = 1GB
+
+# should_transfer_files = YES
+# when_to_transfer_output = ON_Exit
+# transfer_output         = True
+# transfer_input_files = 	
+# output_destination = 
+# transfer_output_files = boot
+
+# Enables Virtual Environment
+getenv = true
+
+log = 		condor/logs/log.$(Process)
+error = 	condor/error/err.$(Process)
+output = 	condor/output/out.$(Process)
+
+# Hyperparameters (algorithm, training_timesteps, testing_timesteps, training_iterations, testing_iterations, learning_rate, batch_size)
+
+arguments = PPO2 2500 2500 4 4 0.0025 64
+queue 1
+
+# arguments = PPO2 5000 5000 20 20 0.0025 128
+# queue 1
+
+# arguments = PPO2 7500 7500 20 20 0.0025 256
+# queue 1
+
+# arguments = PPO2 8500 8500 20 20 0.0025 64
+# queue 1

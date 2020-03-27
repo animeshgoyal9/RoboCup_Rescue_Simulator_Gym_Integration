@@ -1,0 +1,25 @@
+	
+# Condor submit file
+
+Executable = testing.py
+
+Universe = vanilla
+notify_user = animesh.goyal9@gmail.com
+Environment = ONCONDOR=true
+getenv = true
+Requirements = ARCH == "X86_64" && !GPU && InMastodon
+
++Group = "GRAD"
++Project = "AI_ROBOTICS"
++ProjectDescription = "simulating the RoboCup Rescue Simulator"
+
+Arguments = "PPO2 2500 2500 2 2 0.0025 256"
+
+Output = simple.out
+Error = simple.error
+
+queue
+
+Arguments = "DQN 2500 2500 2 2 0.0025 256"
+
+queue

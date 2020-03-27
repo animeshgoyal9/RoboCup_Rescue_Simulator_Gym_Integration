@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option java_package = "AnimFireChalBuilding";
+option java_outer_classname = "AnimFireChalProto";
+
+package AnimFireChalBuilding;
+
+service AnimFireChalBuilding {
+  rpc getBuildingInfo (BuildingInfo) returns (Empty) {}
+}
+
+message BuildingInfo {
+	repeated Building buildings = 1; 
+}
+
+
+
+message Building {
+  int32 fieryness = 1;
+  int32 temperature = 2;
+  int32 x_building = 3; 
+  int32 y_building = 4;
+}
+
+message Action {
+}
