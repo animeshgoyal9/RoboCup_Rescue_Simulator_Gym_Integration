@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "pyRL";
+option java_outer_classname = "PyRLProto";
+
+package pyRL;
+
+service PyRL {
+  rpc getObs (Action) returns (Obs) {}
+}
+
+message Obs {
+  double x = 1;
+  double v = 2;
+}
+
+message Action {
+  int32 action = 1;
+}
