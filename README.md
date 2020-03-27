@@ -13,17 +13,9 @@ This project marks the application of Deep Reinforcement learning to RoboCup Res
 * Python 3.5+
 * Openai Gym
 * Stable Baselines
-* Tensorboard 1.14 (Note: Stable baselines is not compatible with Tensorboard 2.0) 
+* Tensorboard 1.14 (Note: Stable baselines is not compatible with Tensorboard 2.0)  
 
-## 2. Download project from GitHub
-
-```bash
-
-$ git clone https://github.com/animeshgoyal9/RoboCup-Gym.git
-
-``` 
-
-## 3. Compile
+## 2. Compile
 
 Open a terminal window, navigate to the `rcrs-server-master` root directory and compile 
 
@@ -47,7 +39,7 @@ $ sh compile.sh
 
 Close the second terminal
 
-## 4. Execute
+## 3. Execute
 
 On the first terminal, navigate to the `boot` folder in  `rcrs-server-master` directory and run the following python file 
 
@@ -57,7 +49,7 @@ $ testing.py
 
 ``` 
 
-## 5. Visualization
+## 4. Visualization
 
 To visualize the reward over time, losses etc, you can use tensorboard. 
 
@@ -69,7 +61,7 @@ $ tensorboard --logdir ./ppo2_RoboCupGym_tensorboard/
 
 ``` 
 
-## 6. Code Structure
+## 5. Code Structure
 
 - `./rcrs-server-master/`: folder where simulation server resides
 - `./rcrs-adf-sample/`   : folder where simulation client resides
@@ -81,7 +73,7 @@ $ tensorboard --logdir ./ppo2_RoboCupGym_tensorboard/
    - `..maps/gml/test/map` : default map 
    - `..maps/gml/test/config`: configuration file associated with the map
 
-## 7. Results 
+## 6. Results 
 
 
 ### PPO 
