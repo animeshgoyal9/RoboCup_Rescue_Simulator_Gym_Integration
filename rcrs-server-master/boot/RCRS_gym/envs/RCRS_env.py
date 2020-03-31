@@ -129,7 +129,7 @@ class RCRSenv(gym.Env):
         # print("Action for 1127234487" ,  action_set_list[action[3]])
         # print("-----------------------------------------------")
         flat_list = [item for sublist in state_info for item in sublist]
-        print(flat_list)
+       
         self.state = flat_list
 
         done = bool(self.curr_episode == MAX_TIMESTEP)
