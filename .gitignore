@@ -3,6 +3,8 @@
 
 .DS_Store
 
+.gradle
+
 /.settings
 /.classpath
 /.project
