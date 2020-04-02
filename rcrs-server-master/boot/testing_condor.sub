@@ -9,7 +9,10 @@ Input = testing_condor.sub
 
 # notify_user = animesh.goyal9@gmail.com
 # notification = error
-# Requirements = TARGET.UidDomain == "cs.utexas.edu" &&  TARGET.FileSystemDomain == "cs.utexas.edu" && InMastodon && ARCH == "X86_64" && !GPU && ( target.OpSys == "LINUX") 
+Requirements = TARGET.UidDomain == "cs.utexas.edu" &&  TARGET.FileSystemDomain == "cs.utexas.edu" && InMastodon && ARCH == "X86_64" && !GPU && ( target.OpSys == "LINUX") 
+
+# Requirements = (ARCH == "X86_64") && !GPU && (Angrist) 
+
 
 Environment = ONCONDOR=true
 

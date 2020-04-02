@@ -27,10 +27,13 @@ from numpy import inf
 import collections
 import shutil
 
-
 # map_used = "Small"
 map_used = "Big"
 algo_used = "PPO2"
+
+building_port = 20006
+reward_port = 20007
+agent_port = 20001
 
 if (map_used == 'Small'):
     MAX_TIMESTEP = 100
@@ -56,7 +59,7 @@ hostname = socket.gethostname()
 path = os.path.join(sys.path[0], hostname) 
 path_for_kill_file = os.path.join(sys.path[0], "kill_rcrs.sh")
 path_for_cache_file = os.path.join(sys.path[0], "__pycache__")
-string_for_launch_file = "python3" + " " + sys.path[0] + "/launch_file.py"
+string_for_launch_file = "python3" + " " + sys.path[0] + "/launch_file.py {} {} {}".format(building_port,reward_port,agent_port)
 len_action_list = len(action_set_list)
 path_for_calling_function = "python3" + "-c" + "'RCRS_env.launch_components('')"
 #delete cache files
@@ -74,6 +77,8 @@ class RCRSenv(gym.Env):
             self.action_space = Discrete(len_action_list*len_action_list)
         low = np.array([-inf]*(len_action_list*2+(6*n_agents)))
         high = np.array([inf]*(len_action_list*2+(6*n_agents)))
+        # low = np.array([-inf]*202)
+        # high = np.array([inf]*202)
         self.observation_space = Box(low, high, dtype=np.float32, shape=None)
         self.curr_episode = 0
         self.seed()
@@ -154,6 +159,7 @@ class RCRSenv(gym.Env):
     def reset(self):
         print("Reset running======================================")
         subprocess.Popen(['xterm', '-e', string_for_launch_file])
+
         # subprocess.Popen([sys.path[0] + "/launch_file.py"])
   
         if (map_used == 'Small'):
@@ -215,7 +221,7 @@ def run_adf(bid):
     # of the code.
     print("client for agents running 1======================================")
 
-    with grpc.insecure_channel('localhost:20001') as channel:
+    with grpc.insecure_channel('localhost:{}'.format(agent_port)) as channel:
         stub = AgentInfo_pb2_grpc.AnimFireChalAgentStub(channel)
         response = stub.getAgentInfo(AgentInfo_pb2.ActionInfo(actions = [
             # AgentInfo_pb2.Action(agent_id = 210552869, building_id=action_set_list[bid//len_action_list]), 
@@ -242,19 +248,19 @@ def run_adf(bid):
         agent_state_info.append(i.water)
         agent_state_info.append(i.hp)
         agent_state_info.append(i.idle)
-    print("client for agents running 2======================================")
+    print("client for agents running 2======================================", agent_port)
     return agent_state_info
 
 def run_reward():
-    with grpc.insecure_channel('localhost:20002') as channel:
+    with grpc.insecure_channel('localhost:{}'.format(reward_port)) as channel:
         stub = BuildingInfo_pb2_grpc.AnimFireChalBuildingStub(channel)
         response_reward = stub.getRewards(BuildingInfo_pb2.Empty())
-    print("client for reward running======================================")
+    print("client for reward running======================================", reward_port)
     return response_reward.reward
 
 def run_server():
     print("client for buildings running 1======================================")
-    with grpc.insecure_channel('localhost:20003') as channel:
+    with grpc.insecure_channel('localhost:{}'.format(building_port)) as channel:
         stub = BuildingInfo_pb2_grpc.AnimFireChalBuildingStub(channel)
         response = stub.getBuildingInfo(BuildingInfo_pb2.Empty())
     building_state_info = []
@@ -262,7 +268,7 @@ def run_server():
         building_state_info.append(i.fieryness)
         building_state_info.append(round(i.temperature,2))
         building_state_info.append(i.building_id)
-    print("client for buildings running 2======================================")
+    print("client for buildings running 2======================================", building_port)
     return building_state_info
 
 

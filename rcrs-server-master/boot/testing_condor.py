@@ -1,42 +1,53 @@
-#!/usr/bin/env python
+#!/usr/bin/python 
 
-import subprocess, sys, argparse, socket, os, time
-import gym
-from subprocess import *
+# import subprocess, sys, argparse, socket, os, time
+# import gym
+# from subprocess import *
 
-import gym, time
-import RCRS_gym
-import os
-import numpy as np
-import shutil
+# import gym, time
+# import RCRS_gym
+# import os
+# import numpy as np
+# import shutil
+# import sys
+# import socket
+# import argparse
+# from scipy import stats
+# import pandas as pd
+# from openpyxl import Workbook 
+# import matplotlib.pyplot as plt
+# import time
+# from datetime import date, datetime
+# import subprocess
+# from subprocess import *
+
+# from stable_baselines.common.vec_env import DummyVecEnv, VecNormalize, VecEnv
+# from stable_baselines import PPO2, DQN, A2C, DDPG
+# from stable_baselines import results_plotter
+# from stable_baselines.common.policies import FeedForwardPolicy
+# # from stable_baselines.deepq.policies import FeedForwardPolicy
+# from stable_baselines.bench import Monitor
+# from stable_baselines.results_plotter import load_results, ts2xy
+# from stable_baselines.ddpg import AdaptiveParamNoiseSpec
+
+# string_for_launch_file = "python3" + " " + sys.path[0] + "/launch_file.py"
+# path_for_kill_file = os.path.join(sys.path[0], "kill.sh")
+# print("Check 1-----------------------------------------------------------")
+# # subprocess.Popen(["xterm", "-e", string_for_launch_file])
+# subprocess.Popen([sys.path[0] + "/launch_file.py"])
+# time.sleep(20)
+# print("Check 2-----------------------------------------------------------")
+
+
+
 import sys
-import socket
-import argparse
-from scipy import stats
-import pandas as pd
-from openpyxl import Workbook 
-import matplotlib.pyplot as plt
 import time
-from datetime import date, datetime
-import subprocess
-from subprocess import *
-
-from stable_baselines.common.vec_env import DummyVecEnv, VecNormalize, VecEnv
-from stable_baselines import PPO2, DQN, A2C, DDPG
-from stable_baselines import results_plotter
-from stable_baselines.common.policies import FeedForwardPolicy
-# from stable_baselines.deepq.policies import FeedForwardPolicy
-from stable_baselines.bench import Monitor
-from stable_baselines.results_plotter import load_results, ts2xy
-from stable_baselines.ddpg import AdaptiveParamNoiseSpec
-
-string_for_launch_file = "python3" + " " + sys.path[0] + "/launch_file.py"
-path_for_kill_file = os.path.join(sys.path[0], "kill.sh")
-print("Check 1-----------------------------------------------------------")
-# subprocess.Popen(["xterm", "-e", string_for_launch_file])
-subprocess.Popen([sys.path[0] + "/launch_file.py"])
-time.sleep(20)
-print("Check 2-----------------------------------------------------------")
+i=1
+while i<=60:
+        print (i)
+        i+=1
+        time.sleep(1)
+print (2**8)
 # subprocess.Popen(path_for_kill_file, shell=True)
 # subprocess.Popen([sys.path[0], "/kill.sh"])
 # time.sleep(2)
