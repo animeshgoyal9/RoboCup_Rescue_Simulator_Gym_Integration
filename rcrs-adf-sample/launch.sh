@@ -25,4 +25,5 @@ else
   echo "-pre [0|1]                       Precompute flag"
   echo "-d [0|1]                         Debug flag"
   echo "-mc [FILE]                       ModuleConfig file name"
+  echo "-p [AGENT_PORT]                  agent port number"
 fi

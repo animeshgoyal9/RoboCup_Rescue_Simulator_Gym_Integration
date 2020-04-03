@@ -31,8 +31,8 @@ import shutil
 map_used = "Big"
 algo_used = "PPO2"
 
-building_port = 20006
-reward_port = 20007
+building_port = 20003
+reward_port = 20002
 agent_port = 20001
 
 if (map_used == 'Small'):
@@ -77,8 +77,6 @@ class RCRSenv(gym.Env):
             self.action_space = Discrete(len_action_list*len_action_list)
         low = np.array([-inf]*(len_action_list*2+(6*n_agents)))
         high = np.array([inf]*(len_action_list*2+(6*n_agents)))
-        # low = np.array([-inf]*202)
-        # high = np.array([inf]*202)
         self.observation_space = Box(low, high, dtype=np.float32, shape=None)
         self.curr_episode = 0
         self.seed()
@@ -126,7 +124,7 @@ class RCRSenv(gym.Env):
 
         #action_for_greedy_algo_A2 = int((state_info_temp.index(secondmax)))
         #action = [action_for_greedy_algo_A1+1, action_for_greedy_algo_A2+1]
-
+        run_reward()
         state_info.append(run_adf(action))
         # print("Action for 210552869" ,   action_set_list[action[0]])
         # print("Action for 1618773504" ,  action_set_list[action[1]])

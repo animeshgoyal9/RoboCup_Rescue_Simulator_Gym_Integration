@@ -38,6 +38,9 @@ import adf.agent.communication.standard.bundle.information.MessageFireBrigade;
 import adf.component.module.complex.BuildingDetector;
 import adf.component.tactics.TacticsFireBrigade;
 
+
+import adf.Main; 
+
 public class SampleTacticsFireBrigade extends TacticsFireBrigade
 {
     private BuildingDetector buildingDetector;
@@ -107,8 +110,10 @@ public class SampleTacticsFireBrigade extends TacticsFireBrigade
         registerModule(this.actionExtMove);
         registerModule(this.commandExecutorFire);
         registerModule(this.commandExecutorScout);
-        
-		server = ServerBuilder.forPort(20001).addService(new AnimFireChalAgent()).build();
+        System.out.println("**********************Hello**************** " + Main.getAgentPortNumber());
+
+
+		server = ServerBuilder.forPort(Main.getAgentPortNumber()).addService(new AnimFireChalAgent()).build();
 		try {
 			server.start();
 			System.out.println("Server started at " + server.getPort());	
