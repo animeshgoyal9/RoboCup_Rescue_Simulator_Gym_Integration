@@ -28,13 +28,13 @@ import collections
 import shutil
 import pandas as pd
 
-cwd = os.getcwd()
-os.chdir("/u/animesh9/Documents/New_RoboCup_Rescue_Simulator/rcrs-server-master/boot")
+# cwd = os.getcwd()
+# os.chdir("/u/animesh9/Documents/New_RoboCup_Rescue_Simulator/rcrs-server-master/boot")
 df11 = pd.read_csv("allports.csv")
 building_port = int(df11.iloc[0].values)
 reward_port = int(df11.iloc[1].values)
 agent_port = int(df11.iloc[2].values)
-os.chdir(cwd)
+# os.chdir(cwd)
 
 # map_used = "Small"
 map_used = "Big"

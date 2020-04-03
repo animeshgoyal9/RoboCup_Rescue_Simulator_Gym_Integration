@@ -97,11 +97,11 @@ def main():
 	parser.add_argument("agent_port", help = "What is the agent_port?", type=int)
 	args = parser.parse_args()
 	all_ports = [args.building_port, args.reward_port, args.agent_port]
-	cwd = os.getcwd()
-	os.chdir("/u/animesh9/Documents/New_RoboCup_Rescue_Simulator/rcrs-server-master/boot")
+	# cwd = os.getcwd()
+	# os.chdir("/u/animesh9/Documents/New_RoboCup_Rescue_Simulator/rcrs-server-master/boot")
 	df11 = pd.DataFrame(all_ports)
 	df11.to_csv('allports.csv', index=False)
-	os.chdir(cwd)
+	# os.chdir(cwd)
 	# Directory 
 	hostname = socket.gethostname()
 	# Path 
