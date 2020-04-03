@@ -139,7 +139,6 @@ class RCRSenv(gym.Env):
 
         done = bool(self.curr_episode == MAX_TIMESTEP)
         if done == True:
-            # subprocess.Popen(path_for_kill_file, shell=True)
             subprocess.Popen(path_for_kill_file, shell=True)
         if (map_used == 'Small'):
             time.sleep(0.14)
