@@ -30,19 +30,6 @@ from hdqn import HDQN
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
-# Directory 
-hostname = socket.gethostname()
-# Path 
-path = os.path.join(sys.path[0], hostname) 
-# os.mkdir(path) 
-path_for_kill_file = os.path.join(sys.path[0], "kill.sh")
-
-env = gym.make('RCRS-v2')
-# The algorithms require a vectorized environment to run
-env = DummyVecEnv([lambda: env]) 
-# Automatically normalize the input features
-env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.)
-
 
 class CustomPolicy(FeedForwardPolicy):
     def __init__(self, *args, **kwargs):
@@ -51,7 +38,7 @@ class CustomPolicy(FeedForwardPolicy):
                                                           vf=[128, 64])], 
                                            feature_extraction="mlp")
 
-def run_model(algorithm, training_timesteps, testing_timesteps, training_iterations, testing_iterations, learning_rate, batch_size):
+def run_model(algorithm, training_timesteps, testing_timesteps, training_iterations, testing_iterations, learning_rate, batch_size, env, hostname, path_for_kill_file):
 	columns = ['Mean Rewards', 'Standard deviation'] 
 	df = pd.DataFrame(columns=columns)
 	if (algorithm == "PPO2"):
@@ -96,6 +83,7 @@ def run_model(algorithm, training_timesteps, testing_timesteps, training_iterati
 
 
 def main():
+	all_ports = []
 	parser = argparse.ArgumentParser()
 	parser.add_argument("algorithm", help = 'Which algorithm are you using', type= str)
 	parser.add_argument("training_timesteps", help = "How many traning steps are there?", type=int)
@@ -104,8 +92,29 @@ def main():
 	parser.add_argument("testing_iterations", help = "How many traning iterations are there?", type=int)
 	parser.add_argument("learning_rate", help = "What is the learning rate?", type=float)
 	parser.add_argument("batch_size", help = "What is the batch size?", type=int)
+	parser.add_argument("building_port", help = "What is the building_port?", type=int)
+	parser.add_argument("reward_port", help = "What is the reward_port?", type=int)
+	parser.add_argument("agent_port", help = "What is the agent_port?", type=int)
 	args = parser.parse_args()
-	run_model(args.algorithm, args.training_timesteps,args.testing_timesteps, args.training_iterations, args.testing_iterations, args.learning_rate, args.batch_size)
+	all_ports = [args.building_port, args.reward_port, args.agent_port]
+	cwd = os.getcwd()
+	os.chdir("/u/animesh9/Documents/New_RoboCup_Rescue_Simulator/rcrs-server-master/boot")
+	df11 = pd.DataFrame(all_ports)
+	df11.to_csv('allports.csv', index=False)
+	os.chdir(cwd)
+	# Directory 
+	hostname = socket.gethostname()
+	# Path 
+	path = os.path.join(sys.path[0], hostname) 
+	# os.mkdir(path) 
+	path_for_kill_file = os.path.join(sys.path[0], "kill.sh")
+
+	env = gym.make('RCRS-v2')
+	# The algorithms require a vectorized environment to run
+	env = DummyVecEnv([lambda: env]) 
+	# Automatically normalize the input features
+	env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.)
+	run_model(args.algorithm, args.training_timesteps,args.testing_timesteps, args.training_iterations, args.testing_iterations, args.learning_rate, args.batch_size, env = env, hostname = hostname, path_for_kill_file = path_for_kill_file)
 
 if __name__ == '__main__':
 	main()

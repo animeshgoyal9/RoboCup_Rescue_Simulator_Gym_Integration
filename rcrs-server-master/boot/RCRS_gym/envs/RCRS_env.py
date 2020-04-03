@@ -26,14 +26,19 @@ from subprocess import *
 from numpy import inf
 import collections
 import shutil
+import pandas as pd
+
+cwd = os.getcwd()
+os.chdir("/u/animesh9/Documents/New_RoboCup_Rescue_Simulator/rcrs-server-master/boot")
+df11 = pd.read_csv("allports.csv")
+building_port = int(df11.iloc[0].values)
+reward_port = int(df11.iloc[1].values)
+agent_port = int(df11.iloc[2].values)
+os.chdir(cwd)
 
 # map_used = "Small"
 map_used = "Big"
 algo_used = "PPO2"
-
-building_port = 20003
-reward_port = 20002
-agent_port = 20001
 
 if (map_used == 'Small'):
     MAX_TIMESTEP = 100
@@ -62,10 +67,7 @@ path_for_cache_file = os.path.join(sys.path[0], "__pycache__")
 string_for_launch_file = "python3" + " " + sys.path[0] + "/launch_file.py {} {} {}".format(building_port,reward_port,agent_port)
 len_action_list = len(action_set_list)
 path_for_calling_function = "python3" + "-c" + "'RCRS_env.launch_components('')"
-#delete cache files
-dirpath_1 = os.path.join(sys.path[0], "__pycache__")
-dirpath_2 = os.path.join(sys.path[0], "RCRS_gym/__pycache__")
-dirpath_3 = os.path.join(sys.path[0], "RCRS_gym/envs/__pycache__")
+
 
 class RCRSenv(gym.Env):
     metadata = {'render.modes' : None}  
@@ -143,14 +145,6 @@ class RCRSenv(gym.Env):
             time.sleep(0.14)
         else:
             time.sleep(0.19)
-
-        # delete cache files
-        # if os.path.exists(dirpath_1) and os.path.isdir(dirpath_1):
-        #     shutil.rmtree(dirpath_1)
-        # if os.path.exists(dirpath_2) and os.path.isdir(dirpath_2):
-        #     shutil.rmtree(dirpath_2)
-        # if os.path.exists(dirpath_3) and os.path.isdir(dirpath_3):
-        #     shutil.rmtree(dirpath_3)
 
         return np.array(self.state), self.reward, done , {}
 
