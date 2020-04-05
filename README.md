@@ -79,14 +79,14 @@ $ tensorboard --logdir ./ppo2_RoboCupGym_tensorboard/
 ### PPO 
 | <img src="/Images/GIFs/NoTrained.gif" width = "250"/>  |  <img src="/Images/GIFs/PartiallyTrained.gif" width = "250px" /> | <img src="/Images/GIFs/FullyTrained.gif" width="250px" /> |
 |:---:|:---:|:---:|
-| 5 episodes | 150 episodes | 400 episodes |
+| 5 episodes | 150 episodes | 250 episodes |
 
 
 ### DQN
 
 | <img src="/Images/GIFs/DQN_Episode 5.gif" width = "250" />   | <img src="/Images/GIFs/DQN_Episode 150.gif" width = "250px" /> | <img src="/Images/GIFs/DQN_Episode 250.gif" width="250px" /> |
 |:---:|:---:|:---:|
-| 5 episodes| 150 episodes | 400 episodes |
+| 5 episodes| 150 episodes | 250 episodes |
 
 
 ##### Learning Curve
