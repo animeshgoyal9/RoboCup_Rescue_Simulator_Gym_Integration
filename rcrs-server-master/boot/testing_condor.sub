@@ -9,7 +9,7 @@ Input = testing_condor.sub
 
 # notify_user = animesh.goyal9@gmail.com
 # notification = error
-Requirements = TARGET.UidDomain == "cs.utexas.edu" &&  TARGET.FileSystemDomain == "cs.utexas.edu" && InMastodon && ARCH == "X86_64" && !GPU && ( target.OpSys == "LINUX") 
+# Requirements = TARGET.UidDomain == "cs.utexas.edu" &&  TARGET.FileSystemDomain == "cs.utexas.edu" && InMastodon && ARCH == "X86_64" && !GPU && ( target.OpSys == "LINUX") 
 
 # Requirements = (ARCH == "X86_64") && !GPU && (Angrist) 
 
@@ -40,7 +40,7 @@ output = 	condor/output/out.$(Process)
 
 # Hyperparameters (algorithm, training_timesteps, testing_timesteps, training_iterations, testing_iterations, learning_rate, batch_size)
 
-arguments = PPO2 2500 2500 4 4 0.0025 64
+arguments = PPO2 2500 2500 4 4 0.0025 64 30001 30002 30003
 queue 1
 
 # arguments = PPO2 5000 5000 20 20 0.0025 128
