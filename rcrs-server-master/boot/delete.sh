@@ -16,7 +16,12 @@ echo "Current pid : $pid"
 totalpid="$pid-$now"
 echo "Total pid : $totalpid"
 
-echo "First pid : $pid$1"
+pids=( $pid )
+echo "First pid: ${pids[0]}"
+echo "Second pid: ${pids[-1]}"
+
+#echo $pid | cut -d' ' -f1
+#echo $pid | cut -d' ' -f(-1)
 
 #echo $LOGDIR
 #LOGDIR="$LOGDIR-$HOSTNAME"

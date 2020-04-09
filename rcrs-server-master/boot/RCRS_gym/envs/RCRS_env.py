@@ -150,7 +150,7 @@ class RCRSenv(gym.Env):
     def reset(self):
         print("Reset running======================================")
         subprocess.Popen(['xterm', '-e', string_for_launch_file])
-
+        
         # subprocess.Popen([sys.path[0] + "/launch_file.py"])
   
         if (map_used == 'Small'):

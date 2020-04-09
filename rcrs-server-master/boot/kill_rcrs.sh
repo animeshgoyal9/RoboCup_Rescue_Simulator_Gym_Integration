@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 
 now=$(date +"%T")
 echo "Current time : $now"
@@ -6,17 +6,21 @@ echo "Current time : $now"
 pid=$(pidof xterm $!)
 echo "Current pid : $pid"
 
-totalpid="$pid-$now"
-echo "Total pid : $totalpid"
+# totalpid="$pid-$now"
+# echo "Total pid : $totalpid"
 
 pids=( $pid )
-echo "**************************************"
-echo "**************Killing Process*********"
-echo "**************************************"
-echo "First pid: ${pids[0]}"
-echo "Second pid: ${pids[-1]}"
+# echo "**************************************"
+# echo "**************Killing Process*********"
+# echo "**************************************"
+# echo "First pid: ${pids[0]}"
+# echo "Second pid: ${pids[-1]}"
 
 kill -9 ${pids[-1]}
+
+rm -rf logs-*
+rm -rf *_tensorboard
+rm -rf __pycache__
 #pkill -9 xterm 
 
 
