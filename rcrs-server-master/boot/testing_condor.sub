@@ -1,22 +1,22 @@
-universe = vanilla
-executable = testing_condor.sh 
+universe = 						vanilla
+executable = 					testing_condor.sh 
 
-+Group = "GRAD"
-+Project = "AI_ROBOTICS"
-+ProjectDescription = "Simulating RoboCup Rescue Simulator"
++Group = 						"GRAD"
++Project = 						"AI_ROBOTICS"
++ProjectDescription = 			"Simulating RoboCup Rescue Simulator"
 
-Input = testing_condor.sub
+Input = 						testing_condor.sub
 
-# notify_user = animesh.goyal9@gmail.com
-# notification = error
-# Requirements = TARGET.UidDomain == "cs.utexas.edu" &&  TARGET.FileSystemDomain == "cs.utexas.edu" && InMastodon && ARCH == "X86_64" && !GPU && ( target.OpSys == "LINUX") 
+# notify_user = 				animesh.goyal9@gmail.com
+# notification = 				error
+Requirements = 				TARGET.UidDomain == "cs.utexas.edu" &&  TARGET.FileSystemDomain == "cs.utexas.edu" && InMastodon && ARCH == "X86_64" && !GPU && ( target.OpSys == "LINUX") 
 
-# Requirements = (ARCH == "X86_64") && !GPU && (Angrist) 
+# Requirements = 				(ARCH == "X86_64") && !GPU && (Angrist) 
 
 
-Environment = ONCONDOR=true
+Environment = 					ONCONDOR=true
 
-# Rank = -SlotId-1*InMastodon
+Rank = 						-SlotId-1*InMastodon
 
 
 # Specify the resources required
@@ -38,16 +38,16 @@ log = 		condor/logs/log.$(Process)
 error = 	condor/error/err.$(Process)
 output = 	condor/output/out.$(Process)
 
-# Hyperparameters (algorithm, training_timesteps, testing_timesteps, training_iterations, testing_iterations, learning_rate, batch_size)
+# Hyperparameters (algorithm, training_timesteps, testing_timesteps, training_iterations, testing_iterations, learning_rate, batch_size, building_port, reward_port, agent_port)
 
-arguments = PPO2 2500 2500 4 4 0.0025 64 30001 30002 30003
+arguments = 	PPO2 2500 2500 4 4 0.0025 64 30001 30002 30003
 queue 1
 
-# arguments = PPO2 5000 5000 20 20 0.0025 128
+# arguments = 	PPO2 5000 5000 20 20 0.0025 128
 # queue 1
 
-# arguments = PPO2 7500 7500 20 20 0.0025 256
+# arguments = 	PPO2 7500 7500 20 20 0.0025 256
 # queue 1
 
-# arguments = PPO2 8500 8500 20 20 0.0025 64
+# arguments = 	PPO2 8500 8500 20 20 0.0025 64
 # queue 1
