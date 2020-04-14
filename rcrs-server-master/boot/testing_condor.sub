@@ -43,11 +43,13 @@ output = 	condor/output/out.$(Process)
 arguments = 	PPO2 2500 2500 4 4 0.0025 64 30001 30002 30003
 queue 1
 
-# arguments = 	PPO2 5000 5000 20 20 0.0025 128
+# arguments = 	PPO2 5000 5000 20 20 0.0025 128 30001 30002 30003
 # queue 1
 
-# arguments = 	PPO2 7500 7500 20 20 0.0025 256
+# arguments = 	PPO2 7500 7500 20 20 0.0025 256 30001 30002 30003
 # queue 1
 
-# arguments = 	PPO2 8500 8500 20 20 0.0025 64
+# arguments = 	PPO2 8500 8500 20 20 0.0025 64 30001 30002 30003
 # queue 1
+
+

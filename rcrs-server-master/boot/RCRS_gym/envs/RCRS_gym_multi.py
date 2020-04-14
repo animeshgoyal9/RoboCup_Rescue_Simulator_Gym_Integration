@@ -68,6 +68,101 @@ string_for_launch_file = "python3" + " " + sys.path[0] + "/launch_file.py {} {} 
 len_action_list = len(action_set_list)
 path_for_calling_function = "python3" + "-c" + "'RCRS_env.launch_components('')"
 
+class MultiAgentEnv(gym.Env):
+    metadata = {'render.modes' : None}  
+    current_action = 0
+    def __init__(self, world):
+
+        self.agents = n_agents
+        # set required vectorized gym env property
+        self.n = n_agents
+
+        self.action_space = Discrete(len_action_list*len_action_list)
+        low = np.array([-inf]*(len_action_list*2+(6*n_agents)))
+        high = np.array([inf]*(len_action_list*2+(6*n_agents)))
+        self.observation_space = Box(low, high, dtype=np.float32, shape=None)
+        self.curr_episode = 0
+
+    def step(self, action_n):
+        obs_n = []
+        reward_n = []
+        done_n = []
+        
+        self.agents = n_agents
+        # set action for each agent
+        for i, agent in enumerate(self.agents):
+            self._set_action(action_n[i], agent, self.action_space[i])
+        # advance world state
+        self.world.step()
+        # record observation for each agent
+        for agent in self.agents:
+            self.curr_episode += 1
+            print(self.curr_episode)
+            state_info_interm = []
+            state_info_interm.append(run_server())
+
+            fieryeness_counter = np.array(state_info_interm[0][0::3])
+            appending_list = []
+            for i in fieryeness_counter:
+                if 0 <= i <= 2:
+                    appending_list.append(float(10/len(fieryeness_counter)))
+                elif 3 <= i <= 5:
+                    appending_list.append(float(5/len(fieryeness_counter)))
+                else:
+                    appending_list.append(float(-10/len(fieryeness_counter)))
+            
+            self.reward = sum(appending_list)
+            print(self.reward)
+            state_info = []
+            state_info.append(select_state_info_from_action_list(state_info_interm, action_set_list))
+            state_info.append(run_adf(action))
+            flat_list = [item for sublist in state_info for item in sublist]
+           
+            self.state = flat_list
+
+            obs_n.append(self.state)
+            reward_n.append(self.reward)
+
+        self.done = bool(self.curr_episode == MAX_TIMESTEP)
+        if self.done == True:
+            subprocess.Popen(path_for_kill_file, shell=True)
+        done_n = self.done
+
+        if (map_used == 'Small'):
+            time.sleep(0.14)
+        else:
+            time.sleep(0.19)
+        # all agents get total reward in cooperative case
+        reward_n = np.sum(reward_n)
+
+        return obs_n, reward_n, done_n, info_n
+
+    def reset(self):
+        print("Reset running======================================")
+        subprocess.Popen(['xterm', '-e', string_for_launch_file])
+  
+        if (map_used == 'Small'):
+            time.sleep(11)
+        else:
+            time.sleep(14)
+
+        obs_n = []
+        self.agents = n_agents
+        for agent in self.agents:
+            reset_action = 0
+            reset_interm = []
+            
+            print("Reset: Agents: Buildings running======================================")
+            reset_interm.append(run_server())
+            reset = []
+            reset.append(select_state_info_from_action_list(reset_interm, action_set_list))
+            reset.append(run_adf(reset_action))
+            flat_list_reset = [item for sublist in reset for item in sublist]
+
+            self.state = flat_list_reset
+            obs_n.append(self.state)
+        return obs_n
+
 
 class RCRSenv(gym.Env):
     metadata = {'render.modes' : None}  
@@ -107,9 +202,9 @@ class RCRSenv(gym.Env):
         state_info.append(select_state_info_from_action_list(state_info_interm, action_set_list))
     # uncomment to run greedy algorithm
 
-        state_info_temp = state_info[0][1::2]
+        # state_info_temp = state_info[0][1::2]
         
-        action = greedy_actions(state_info_temp, n_agents)
+        # action = greedy_actions(state_info_temp, n_agents)
         
         #action_for_greedy_algo_A1 = int((state_info_temp.index(max(state_info_temp))))
         
@@ -126,7 +221,7 @@ class RCRSenv(gym.Env):
 
         #action_for_greedy_algo_A2 = int((state_info_temp.index(secondmax)))
         #action = [action_for_greedy_algo_A1+1, action_for_greedy_algo_A2+1]
-        run_reward()
+        # run_reward()
         state_info.append(run_adf(action))
         # print("Action for 210552869" ,   action_set_list[action[0]])
         # print("Action for 1618773504" ,  action_set_list[action[1]])
