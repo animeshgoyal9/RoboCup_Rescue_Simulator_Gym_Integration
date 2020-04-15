@@ -74,7 +74,7 @@ class MultiAgentEnv(gym.Env):
     def __init__(self, world):
 
         self.agents = n_agents
-        # set required vectorized gym env property
+        
         self.n = n_agents
 
         self.action_space = Discrete(len_action_list*len_action_list)
@@ -95,9 +95,10 @@ class MultiAgentEnv(gym.Env):
         # advance world state
         self.world.step()
         # record observation for each agent
+        self.curr_episode += 1
+        print(self.curr_episode)
+
         for agent in self.agents:
-            self.curr_episode += 1
-            print(self.curr_episode)
             state_info_interm = []
             state_info_interm.append(run_server())
 
@@ -147,9 +148,12 @@ class MultiAgentEnv(gym.Env):
             time.sleep(14)
 
         obs_n = []
+        reset_action_list = []
         self.agents = n_agents
         for agent in self.agents:
             reset_action = 0
+            reset_action_list.append(reset_action)
+            
             reset_interm = []
             
             print("Reset: Agents: Buildings running======================================")

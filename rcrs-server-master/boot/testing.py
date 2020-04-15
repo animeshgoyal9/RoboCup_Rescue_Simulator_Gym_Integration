@@ -42,8 +42,8 @@ def run_model(algorithm, training_timesteps, testing_timesteps, training_iterati
 	columns = ['Mean Rewards', 'Standard deviation'] 
 	df = pd.DataFrame(columns=columns)
 	if (algorithm == "PPO2"):
-	    from stable_baselines.common.policies import MlpPolicy, MlpLstmPolicy
-	    model = PPO2(MlpLstmPolicy, env, verbose=1, learning_rate=learning_rate, tensorboard_log = "./{}_rcrs_tensorboard/".format(hostname), n_steps = batch_size, nminibatches = 1)
+	    from stable_baselines.common.policies import MlpPolicy
+	    model = PPO2(MlpPolicy, env, verbose=1, learning_rate=learning_rate, tensorboard_log = "./{}_rcrs_tensorboard/".format(hostname), n_steps = batch_size)
 	else:
 	    from stable_baselines.deepq.policies import MlpPolicy
 	    model = DQN(MlpPolicy, env, verbose=1, learning_rate=learning_rate, tensorboard_log = "./{}_rcrs_tensorboard/".format(hostname),  batch_size = batch_size)
