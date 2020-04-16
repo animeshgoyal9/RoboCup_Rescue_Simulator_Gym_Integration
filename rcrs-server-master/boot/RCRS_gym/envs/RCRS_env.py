@@ -36,8 +36,8 @@ reward_port = int(df11.iloc[1].values)
 agent_port = int(df11.iloc[2].values)
 # os.chdir(cwd)
 
-# map_used = "Small"
-map_used = "Big"
+map_used = "Small"
+# map_used = "Big"
 algo_used = "PPO2"
 
 if (map_used == 'Small'):
@@ -225,12 +225,12 @@ def run_adf(bid):
             # AgentInfo_pb2.Action(agent_id = 1535509101, building_id=action_set_list[bid_3]),
             # AgentInfo_pb2.Action(agent_id = 1127234487, building_id=action_set_list[bid_4])]))
 
-            AgentInfo_pb2.Action(agent_id = 2090075220, building_id=action_set_list[bid[0]]), 
-            AgentInfo_pb2.Action(agent_id = 1618773504, building_id=action_set_list[bid[1]]),
-            AgentInfo_pb2.Action(agent_id = 1535509101, building_id=action_set_list[bid[2]]), 
-            AgentInfo_pb2.Action(agent_id = 1127234487, building_id=action_set_list[bid[3]])]))
+            # AgentInfo_pb2.Action(agent_id = 2090075220, building_id=action_set_list[bid[0]]), 
+            # AgentInfo_pb2.Action(agent_id = 1618773504, building_id=action_set_list[bid[1]]),
+            # AgentInfo_pb2.Action(agent_id = 1535509101, building_id=action_set_list[bid[2]]), 
+            # AgentInfo_pb2.Action(agent_id = 1127234487, building_id=action_set_list[bid[3]])]))
 
-            # AgentInfo_pb2.Action(agent_id = 210552869, building_id=action_set_list[bid[0]]), AgentInfo_pb2.Action(agent_id = 1962675462, building_id=action_set_list[bid[1]])]))
+            AgentInfo_pb2.Action(agent_id = 210552869, building_id=action_set_list[bid[0]]), AgentInfo_pb2.Action(agent_id = 1962675462, building_id=action_set_list[bid[1]])]))
                        
     agent_state_info = []
 

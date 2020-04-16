@@ -8,7 +8,8 @@ import argparse
 	
 
 def launch_everything(building_port, reward_port, agent_port):
-	path_for_start_file = os.path.join(sys.path[0], "start-comprun.sh -m ../maps/gml/berlin/map -c ../maps/gml/berlin/config -bp {} -rp {}".format(building_port,reward_port))
+	path_for_start_file = os.path.join(sys.path[0], "start-comprun.sh -bp {} -rp {}".format(building_port,reward_port))
+	# path_for_start_file = os.path.join(sys.path[0], "start-comprun.sh -m ../maps/gml/berlin/map -c ../maps/gml/berlin/config -bp {} -rp {}".format(building_port,reward_port))
 	path_for_launch_file = os.path.join(sys.path[0], "../../rcrs-adf-sample/launch.sh '-all -p {}'".format(agent_port))
 	subprocess.Popen(path_for_start_file, shell=True)
 	time.sleep(10)
