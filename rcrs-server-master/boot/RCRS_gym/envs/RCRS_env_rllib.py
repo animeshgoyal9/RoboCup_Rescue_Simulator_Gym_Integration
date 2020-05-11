@@ -1,7 +1,10 @@
-#!/usr/bin/env python
-
+from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
-import logging
+
+import copy
+import importlib
+from absl import logging
 
 import grpc
 import sys
@@ -31,17 +34,14 @@ import pandas as pd
 
 # cwd = os.getcwd()
 # os.chdir("/u/animesh9/Documents/New_RoboCup_Rescue_Simulator/rcrs-server-master/boot")
-# df11 = pd.read_csv("allports.csv")
-# building_port = int(df11.iloc[0].values)
-# reward_port = int(df11.iloc[1].values)
-# agent_port = int(df11.iloc[2].values)
-building_port = 20001
-reward_port = 20002
-agent_port = 20003
+df11 = pd.read_csv("allports.csv")
+building_port = int(df11.iloc[0].values)
+reward_port = int(df11.iloc[1].values)
+agent_port = int(df11.iloc[2].values)
 # os.chdir(cwd)
 
-# map_used = "Small"
-map_used = "Big"
+map_used = "Small"
+# map_used = "Big"
 algo_used = "PPO2"
 
 if (map_used == 'Small'):
@@ -71,117 +71,81 @@ string_for_launch_file = "python3" + " " + sys.path[0] + "/launch_file.py {} {} 
 len_action_list = len(action_set_list)
 
 
-class RCRSenv(gym.Env):
-    metadata = {'render.modes' : None}  
-    current_action = 0
-    def __init__(self):
-        if (algo_used == "PPO2"):
-            self.action_space = MultiDiscrete([len(action_set_list)]*n_agents)
-        else:
-            self.action_space = Discrete(len_action_list*len_action_list)
-        low = np.array([-inf]*(len_action_list*2+(6*n_agents)))
-        high = np.array([inf]*(len_action_list*2+(6*n_agents)))
-        self.observation_space = Box(low, high, dtype=np.float32, shape=None)
-        print("@#@#@#@#@#@##@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@##@#@")
-        print(self.observation_space)
-        self.curr_episode = 0
-        self.seed()
+class RCRS_gym_rllib(gym.Env):
+	def __init__(self):
+		self.action_space = MultiDiscrete([len(action_set_list)]*n_agents)
+		low = np.array([-inf]*(len_action_list*2+(6*n_agents)))
+		high = np.array([inf]*(len_action_list*2+(6*n_agents)))
+		self.observation_space = Box(low, high, dtype=np.float32, shape=None)
+		self.curr_episode = 0
+		self.seed()
+
+	def step(self, action):
+	    print("Step running======================================")
+	    self.curr_episode += 1
+	    print(self.curr_episode)
+	    state_info_interm = []
+	    state_info_interm.append(run_server())
+
+	    fieryeness_counter = np.array(state_info_interm[0][0::3])
+	    appending_list = []
+	    for i in fieryeness_counter:
+	        if 0 <= i <= 2:
+	            appending_list.append(float(10/len(fieryeness_counter)))
+	        elif 3 <= i <= 5:
+	            appending_list.append(float(5/len(fieryeness_counter)))
+	        else:
+	            appending_list.append(float(-10/len(fieryeness_counter)))
+	    
+	    self.reward = sum(appending_list)
+	    print(self.reward)
+	    state_info = []
+	    state_info.append(select_state_info_from_action_list(state_info_interm, action_set_list))
+	    state_info.append(run_adf(action))
+
+	    print("-----------------------------------------------")
+	    flat_list = [item for sublist in state_info for item in sublist]
+	   
+	    self.state = flat_list
+
+	    done = bool(self.curr_episode == MAX_TIMESTEP)
+	    if done == True:
+	        subprocess.Popen(path_for_kill_file, shell=True)
+	    if (map_used == 'Small'):
+	        time.sleep(0.14)
+	    else:
+	        time.sleep(0.19)
+
+	    return np.array(self.state), self.reward, done , {}
+
+	def reset(self):
+	    print("Reset running======================================")
+	    subprocess.Popen(['xterm', '-e', string_for_launch_file])
 
 
-    def step(self, action):
-        print("Step running======================================")
-        self.curr_episode += 1
-        print(self.curr_episode)
-        state_info_interm = []
-        state_info_interm.append(run_server())
+	    if (map_used == 'Small'):
+	        time.sleep(11)
+	    else:
+	        time.sleep(14)
+	    
+	    self.curr_episode = 0
 
-        fieryeness_counter = np.array(state_info_interm[0][0::3])
-        appending_list = []
-        for i in fieryeness_counter:
-            if 0 <= i <= 2:
-                appending_list.append(float(10/len(fieryeness_counter)))
-            elif 3 <= i <= 5:
-                appending_list.append(float(5/len(fieryeness_counter)))
-            else:
-                appending_list.append(float(-10/len(fieryeness_counter)))
-        
-        self.reward = sum(appending_list)
-        print(self.reward)
-        state_info = []
-        state_info.append(select_state_info_from_action_list(state_info_interm, action_set_list))
-    # uncomment to run greedy algorithm
+	    reset_action = 0
+	    reset_interm = []
+	    
+	    print("Reset: Agents: Buildings running======================================")
+	    reset_interm.append(run_server())
+	    reset = []
+	    reset.append(select_state_info_from_action_list(reset_interm, action_set_list))
+	    reset.append(run_adf(reset_action))
+	    flat_list_reset = [item for sublist in reset for item in sublist]
 
-        # state_info_temp = state_info[0][1::2]
-        
-        # action = greedy_actions(state_info_temp, n_agents)
-        
-        #action_for_greedy_algo_A1 = int((state_info_temp.index(max(state_info_temp))))
-        
-        #maximum=max(state_info_temp[0],state_info_temp[1]) 
-        #secondmax=min(state_info_temp[0],state_info_temp[1]) 
-          
-        #for i in range(2,len(state_info_temp)): 
-        #    if state_info_temp[i]>maximum: 
-        #        secondmax=maximum
-        #        maximum=state_info_temp[i] 
-        #    else: 
-        #        if state_info_temp[i]>secondmax: 
-        #            secondmax=state_info_temp[i] 
+	    self.state = flat_list_reset
+	    return np.array(self.state) 
 
-        #action_for_greedy_algo_A2 = int((state_info_temp.index(secondmax)))
-        #action = [action_for_greedy_algo_A1+1, action_for_greedy_algo_A2+1]
-        # run_reward()
-        state_info.append(run_adf(action))
-        # print("Action for 210552869" ,   action_set_list[action[0]])
-        # print("Action for 1618773504" ,  action_set_list[action[1]])
-        # print("Action for 1535509101" ,  action_set_list[action[2]])
-        # print("Action for 1127234487" ,  action_set_list[action[3]])
-        print("-----------------------------------------------")
-        flat_list = [item for sublist in state_info for item in sublist]
-       
-        self.state = flat_list
-
-        done = bool(self.curr_episode == MAX_TIMESTEP)
-        if done == True:
-            subprocess.Popen(path_for_kill_file, shell=True)
-        if (map_used == 'Small'):
-            time.sleep(0.14)
-        else:
-            time.sleep(0.19)
-
-        return np.array(self.state), self.reward, done , {}
-
-    def reset(self):
-        print("Reset running======================================")
-        subprocess.Popen(['xterm', '-e', string_for_launch_file])
-
-        # subprocess.Popen([sys.path[0] + "/launch_file.py"])
-  
-        if (map_used == 'Small'):
-            time.sleep(11)
-        else:
-            time.sleep(14)
-        
-        self.curr_episode = 0
-        if (algo_used == "PPO2"):
-            reset_action = [0]*n_agents
-        else:
-            reset_action = 0
-        reset_interm = []
-        
-        print("Reset: Agents: Buildings running======================================")
-        reset_interm.append(run_server())
-        reset = []
-        reset.append(select_state_info_from_action_list(reset_interm, action_set_list))
-        reset.append(run_adf(reset_action))
-        flat_list_reset = [item for sublist in reset for item in sublist]
-
-        self.state = flat_list_reset
-        return np.array(self.state) 
-
-    def seed(self, seed = None):
-        self.np_random, seed = seeding.np_random(seed)
-        return [seed]
+	def seed(self, seed = None):
+	    self.np_random, seed = seeding.np_random(seed)
+	    return [seed]
 
 def greedy_actions(listt, N):
     final_list = []
@@ -267,5 +231,4 @@ def run_server():
         building_state_info.append(i.building_id)
     print("client for buildings running 2======================================", building_port)
     return building_state_info
-
 
