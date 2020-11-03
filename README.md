@@ -2,6 +2,7 @@
 
 This project marks the application of Deep Reinforcement learning to RoboCup Rescue Simulator which is a perfect scenario for multiple agents coordinating with each other to achieve certain goals. 
 
+For a detailed description about the project, checkout "GOYAL-REPORT-2020.pdf"
 
 (Linux) Instructions to download, build and run the RoboCup Rescue Simulator (RCRS) integrated with OpenAI Gym. OpenAI Gym is a toolkit for developing and comparing reinforcement learning algorithms.
 
