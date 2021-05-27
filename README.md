@@ -75,7 +75,19 @@ $ tensorboard --logdir ./ppo2_RoboCupGym_tensorboard/
    - `..maps/gml/test/config`: configuration file associated with the map
 
 ## 6. Results 
+Below are some of the simulations of trained agents on DQN and PPO. These videos have been taken at particular intervals i.e. after 5 episodes, 150 episodes and 250 episodes. Each episode is 100 timesteps long.
 
+Here the red moving dot represents the fire brigade and to the bottom right corner is the refuge where fire brigades are refilling their water tanks.
+Different color shades represent the intensity of the fire in those buildings:
+
+- Light yellow color: Fire starting in the building
+- Orange color: Fire in the building intensifies
+- Red color: Building is burning severely
+- Black color: Building is burnt out
+- Blue color: Fire is extinguished in the building by the fire brigade
+- Grey color: Building is unburnt
+
+Here is a visualization of how the simulator looks like when it is untrained and how it starts learning to finally extinguish all the fire in the city.
 
 ### PPO 
 | <img src="/Images/GIFs/NoTrained.gif" width = "250"/>  |  <img src="/Images/GIFs/PartiallyTrained.gif" width = "250px" /> | <img src="/Images/GIFs/FullyTrained.gif" width="250px" /> |
